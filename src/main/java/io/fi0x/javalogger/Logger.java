@@ -16,6 +16,8 @@ public class Logger
 
     private File logFolder;
     private File currentLogFile;
+    private boolean isDebug;
+    private boolean isVerbose;
 
     private static final String RESET = "\u001B[0m";
     public static final String WHITE = "\u001B[37m";
@@ -25,6 +27,11 @@ public class Logger
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
     public static final String RED = "\u001B[31m";
+
+    private static String defaultVerboseColor = WHITE;
+    private static String defaultInfoColor = WHITE;
+    private static String defaultWarningColor = YELLOW;
+    private static String defaultErrorColor = RED;
 
     private Logger()
     {
@@ -43,52 +50,70 @@ public class Logger
         this.logFolder = logFolder;
         currentLogFile = new File(logFolder.getPath() + File.separator + getLogFileDate() + ".log");
     }
+    public void setDebug(boolean isDebugMode)
+    {
+        isDebug = isDebugMode;
+    }
+    public void setVerbose(boolean isVerboseMode)
+    {
+        isVerbose = isVerboseMode;
+    }
+    public void setDefaultColors(String verboseColor, String infoColor, String warningColor, String errorColor)
+    {
+        defaultVerboseColor = verboseColor;
+        defaultInfoColor = infoColor;
+        defaultWarningColor = warningColor;
+        defaultErrorColor = errorColor;
+    }
 
     public static void VERBOSE(String text)
     {
-        LOG l = new LOG(text).COLOR(WHITE).LEVEL(LEVEL.VER).CODE(0).EXCEPTION(null).FILE_ENTRY(false);
+        LOG l = new LOG(text).COLOR(WHITE).LEVEL(LEVEL.VER).CODE(0).EXCEPTION(null).FILE_ENTRY(false).DEBUG(false).VERBOSE(true);
         getInstance().log(l);
     }
     public static void INFO(String text)
     {
-        LOG l = new LOG(text).COLOR(WHITE).LEVEL(LEVEL.INF).CODE(0).EXCEPTION(null).FILE_ENTRY(true);
+        LOG l = new LOG(text).COLOR(WHITE).LEVEL(LEVEL.INF).CODE(0).EXCEPTION(null).FILE_ENTRY(true).DEBUG(true).VERBOSE(true);
         getInstance().log(l);
     }
     public static void WARNING(String text)
     {
-        LOG l = new LOG(text).COLOR(YELLOW).LEVEL(LEVEL.WRN).CODE(0).EXCEPTION(null).FILE_ENTRY(true);
+        LOG l = new LOG(text).COLOR(YELLOW).LEVEL(LEVEL.WRN).CODE(0).EXCEPTION(null).FILE_ENTRY(true).DEBUG(false).VERBOSE(false);
         getInstance().log(l);
     }
     public static void ERROR(String text)
     {
-        LOG l = new LOG(text).COLOR(RED).LEVEL(LEVEL.ERR).CODE(0).EXCEPTION(null).FILE_ENTRY(true);
+        LOG l = new LOG(text).COLOR(RED).LEVEL(LEVEL.ERR).CODE(0).EXCEPTION(null).FILE_ENTRY(true).DEBUG(false).VERBOSE(false);
         getInstance().log(l);
     }
 
     public void log(LOG log)
     {
-        String logOutput = createLogString(log);
-        System.out.println(log.color + logOutput + RESET);
-
-        if(log.fileEntry)
+        if((log.onlyDebug && isDebug) || (log.onlyVerbose && isVerbose) || (!log.onlyVerbose && !log.onlyDebug))
         {
-            if(!currentLogFile.exists())
-                createLogFile();
+            String logOutput = createLogString(log);
+            System.out.println(log.color + logOutput + RESET);
 
-            try
+            if(log.fileEntry)
             {
-                List<String> fileContent = new ArrayList<>(Files.readAllLines(currentLogFile.toPath(), StandardCharsets.UTF_8));
+                if(!currentLogFile.exists())
+                    createLogFile();
 
-                fileContent.add(logOutput);
-                if(log.exception != null) fileContent.add("\t" + Arrays.toString(log.exception.getStackTrace())
-                        .replace(", ", "\n\t")
-                        .replace("[", "")
-                        .replace("]", ""));
+                try
+                {
+                    List<String> fileContent = new ArrayList<>(Files.readAllLines(currentLogFile.toPath(), StandardCharsets.UTF_8));
 
-                Files.write(currentLogFile.toPath(), fileContent, StandardCharsets.UTF_8);
-            } catch(IOException e)
-            {
-                System.out.println(RED + "Something went wrong when writing to the log-file" + RESET);
+                    fileContent.add(logOutput);
+                    if(log.exception != null) fileContent.add("\t" + Arrays.toString(log.exception.getStackTrace())
+                            .replace(", ", "\n\t")
+                            .replace("[", "")
+                            .replace("]", ""));
+
+                    Files.write(currentLogFile.toPath(), fileContent, StandardCharsets.UTF_8);
+                } catch(IOException e)
+                {
+                    System.out.println(RED + "Something went wrong when writing to the log-file" + RESET);
+                }
             }
         }
     }
@@ -154,6 +179,8 @@ public class Logger
         private int errorCode = 0;
         private Exception exception = null;
         private boolean fileEntry = true;
+        private boolean onlyVerbose = true;
+        private boolean onlyDebug = true;
 
         public LOG(String text)
         {
@@ -183,6 +210,16 @@ public class Logger
         public LOG FILE_ENTRY(boolean shouldWriteToFile)
         {
             fileEntry = shouldWriteToFile;
+            return this;
+        }
+        public LOG DEBUG(boolean onlyInDebugMode)
+        {
+            onlyDebug = onlyInDebugMode;
+            return this;
+        }
+        public LOG VERBOSE(boolean onlyInVerboseMode)
+        {
+            onlyVerbose = onlyInVerboseMode;
             return this;
         }
     }
