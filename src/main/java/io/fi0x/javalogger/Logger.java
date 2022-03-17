@@ -1,18 +1,13 @@
 package io.fi0x.javalogger;
 
-import com.sun.istack.internal.Nullable;
-
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Logger
