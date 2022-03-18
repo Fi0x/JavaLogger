@@ -9,7 +9,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * This class can be used for logging to the default output
+ * and to a log-file.
+ */
 public class Logger
 {
     private static Logger instance;
@@ -18,20 +23,6 @@ public class Logger
     private File currentLogFile;
     private boolean isDebug;
     private boolean isVerbose;
-
-    private static final String RESET = "\u001B[0m";
-    public static final String WHITE = "\u001B[37m";
-    public static final String BLUE = "\u001B[34m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String CYAN = "\u001B[36m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String RED = "\u001B[31m";
-
-    private static String defaultVerboseColor = WHITE;
-    private static String defaultInfoColor = WHITE;
-    private static String defaultWarningColor = YELLOW;
-    private static String defaultErrorColor = RED;
 
     private Logger()
     {
@@ -84,26 +75,6 @@ public class Logger
     {
         isVerbose = isVerboseMode;
     }
-    /**
-     * Change the color that the default logs use when they are not set manually.
-     * Using null as parameter for any color,
-     * does not change that specific color.
-     * @param verboseColor The color of 'VERBOSE' logs
-     *                     (Default is WHITE).
-     * @param infoColor The color of 'INFO' logs
-     *                  (Default is WHITE).
-     * @param warningColor The color of 'WARNING' logs
-     *                     (Default is YELLOW).
-     * @param errorColor The color of 'ERROR' logs
-     *                   (Default is RED).
-     */
-    public void setDefaultColors(String verboseColor, String infoColor, String warningColor, String errorColor)
-    {
-        defaultVerboseColor = verboseColor == null ? defaultVerboseColor : verboseColor;
-        defaultInfoColor = infoColor == null ? defaultInfoColor : infoColor;
-        defaultWarningColor = warningColor == null ? defaultWarningColor : warningColor;
-        defaultErrorColor = errorColor == null ? defaultErrorColor : errorColor;
-    }
 
     /**
      * Create and print a VERBOSE log.
@@ -114,8 +85,7 @@ public class Logger
      */
     public static void VERBOSE(String text)
     {
-        LOG l = new LOG(text).COLOR(defaultVerboseColor).LEVEL(LEVEL.VER).CODE(0).EXCEPTION(null).FILE_ENTRY(false).DEBUG(false).VERBOSE(true);
-        getInstance().log(l);
+        getInstance().log(Objects.requireNonNull(LogSettings.getLOGFromTemplate(text, "verbose")));
     }
     /**
      * Create and print an INFO log.
@@ -126,8 +96,7 @@ public class Logger
      */
     public static void INFO(String text)
     {
-        LOG l = new LOG(text).COLOR(defaultInfoColor).LEVEL(LEVEL.INF).CODE(0).EXCEPTION(null).FILE_ENTRY(true).DEBUG(true).VERBOSE(true);
-        getInstance().log(l);
+        getInstance().log(Objects.requireNonNull(LogSettings.getLOGFromTemplate(text, "info")));
     }
     /**
      * Create and print a WARNING log.
@@ -138,8 +107,7 @@ public class Logger
      */
     public static void WARNING(String text)
     {
-        LOG l = new LOG(text).COLOR(defaultWarningColor).LEVEL(LEVEL.WRN).CODE(0).EXCEPTION(null).FILE_ENTRY(true).DEBUG(false).VERBOSE(false);
-        getInstance().log(l);
+        getInstance().log(Objects.requireNonNull(LogSettings.getLOGFromTemplate(text, "warning")));
     }
     /**
      * Create and print an ERROR log.
@@ -150,8 +118,7 @@ public class Logger
      */
     public static void ERROR(String text)
     {
-        LOG l = new LOG(text).COLOR(defaultErrorColor).LEVEL(LEVEL.ERR).CODE(0).EXCEPTION(null).FILE_ENTRY(true).DEBUG(false).VERBOSE(false);
-        getInstance().log(l);
+        getInstance().log(Objects.requireNonNull(LogSettings.getLOGFromTemplate(text, "error")));
     }
 
     /**
@@ -165,7 +132,7 @@ public class Logger
         if((log.onlyDebug && isDebug) || (log.onlyVerbose && isVerbose) || (!log.onlyVerbose && !log.onlyDebug))
         {
             String logOutput = createLogString(log);
-            System.out.println(log.color + logOutput + RESET);
+            System.out.println(log.color + logOutput + LogSettings.RESET);
 
             if(log.fileEntry)
             {
@@ -185,7 +152,7 @@ public class Logger
                     Files.write(currentLogFile.toPath(), fileContent, StandardCharsets.UTF_8);
                 } catch(IOException e)
                 {
-                    System.out.println(RED + "Something went wrong when writing to the log-file" + RESET);
+                    System.out.println(LogSettings.RED + "Something went wrong when writing to the log-file" + LogSettings.RESET);
                 }
             }
         }
@@ -222,7 +189,7 @@ public class Logger
         } catch(IOException e)
         {
             LOG l = new LOG("Could not create log-directory: " + logFolder)
-                    .COLOR(RED)
+                    .COLOR(LogSettings.RED)
                     .LEVEL(LEVEL.ERR)
                     .CODE(0)
                     .EXCEPTION(e)
@@ -235,7 +202,7 @@ public class Logger
         } catch(IOException e)
         {
             LOG l = new LOG("Could not create file: " + currentLogFile)
-                    .COLOR(RED)
+                    .COLOR(LogSettings.RED)
                     .LEVEL(LEVEL.ERR)
                     .CODE(0)
                     .EXCEPTION(e)
@@ -257,7 +224,7 @@ public class Logger
     public static class LOG
     {
         private final String message;
-        private String color = RESET;
+        private String color = LogSettings.RESET;
         private LEVEL loglevel = LEVEL.INF;
         private int errorCode = 0;
         private Exception exception = null;
@@ -353,6 +320,11 @@ public class Logger
         {
             onlyVerbose = onlyInVerboseMode;
             return this;
+        }
+
+        static LOG copyLogSettings(String text, LOG original)
+        {
+            return new LOG(text).COLOR(original.color).LEVEL(original.loglevel).FILE_ENTRY(original.fileEntry).DEBUG(original.onlyDebug).VERBOSE(original.onlyVerbose);
         }
     }
 
