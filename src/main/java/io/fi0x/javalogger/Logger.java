@@ -157,6 +157,21 @@ public class Logger
             }
         }
     }
+    /**
+     * Print the text with the specified settings-template.
+     * @param text The message to log.
+     * @param templateName The name of the template that should be used.
+     * @return True if logging was successful, False if the template does not exist.
+     */
+    public boolean log(String text, String templateName)
+    {
+        LOG l = LogSettings.getLOGFromTemplate(text, templateName);
+        if(l == null)
+            return false;
+
+        log(l);
+        return true;
+    }
 
     private static String createLogString(LOG log)
     {
