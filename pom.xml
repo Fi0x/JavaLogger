@@ -6,7 +6,7 @@
 
     <groupId>io.github.Fi0x</groupId>
     <artifactId>JavaLogger</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Java Logger</name>
     <description>This is a Library for a custom Java Logger</description>
     <url>http://github.com/Fi0x/JavaLogger</url>
@@ -108,4 +108,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mixpanel</groupId>
+            <artifactId>mixpanel-java</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+    </dependencies>
 </project>

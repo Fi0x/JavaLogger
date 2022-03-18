@@ -33,10 +33,14 @@ public class LogSettings
      * @param writeToFile If logs written with this template should be saved in a log-file.
      * @param onlyDebug If logs with these settings should only be visible in debug-mode.
      * @param onlyVerbose If logs with these settings should only be visible in verbose-mode.
+     * @return True if the template was created successfully, False if the template already existed.
      */
-    public static void createNewTemplate(String templateName, String colorCode, Logger.LEVEL logLevel, boolean writeToFile, boolean onlyDebug, boolean onlyVerbose)
+    public static boolean createNewTemplate(String templateName, String colorCode, Logger.LEVEL logLevel, boolean writeToFile, boolean onlyDebug, boolean onlyVerbose)
     {
+        if(defaultSettings.containsKey(templateName))
+            return false;
         defaultSettings.put(templateName, new Logger.LOG(null).COLOR(colorCode).LEVEL(logLevel).FILE_ENTRY(writeToFile).DEBUG(onlyDebug).VERBOSE(onlyVerbose));
+        return true;
     }
 
     /**
