@@ -23,6 +23,7 @@ public class Logger
     private File currentLogFile;
     private boolean isDebug;
     private boolean isVerbose;
+    private boolean smallLog;
 
     private Logger()
     {
@@ -74,6 +75,18 @@ public class Logger
     public void setVerbose(boolean isVerboseMode)
     {
         isVerbose = isVerboseMode;
+    }
+    /**
+     * Change the way logs are displayed.
+     * Using small-logs will remove all prefixes from logging.
+     * This has the same effect as the plaintext setting in a single LOG,
+     * but will affect all logs.
+     * @param ignorePrefixes Weather or not the Logger should use small-logs
+     *                       (Default is false).
+     */
+    public void setSmallLog(boolean ignorePrefixes)
+    {
+        smallLog = ignorePrefixes;
     }
 
     /**
@@ -175,6 +188,9 @@ public class Logger
 
     private static String createLogString(LOG log)
     {
+        if(log.plainText || getInstance().smallLog)
+            return log.message;
+
         String errorCode = log.errorCode == 0 ? "[---]" : "[" + log.errorCode + "]";
         String prefix = "[" + log.loglevel + "]";
 
@@ -246,6 +262,7 @@ public class Logger
         private boolean fileEntry = true;
         private boolean onlyVerbose = false;
         private boolean onlyDebug = false;
+        private boolean plainText = false;
 
         /**
          * Create a new LOG with the given text.
@@ -305,7 +322,7 @@ public class Logger
         /**
          * Set weather the LOG should be stored in the log-file or not.
          * @param shouldWriteToFile If the LOG should be written to the log-file
-         *                          or only be printed in the output.
+         *                          or only be printed in the output
          *                          (Default will do both).
          * @return The current LOG to be used further.
          */
@@ -316,7 +333,7 @@ public class Logger
         }
         /**
          * Set the debug-state of this LOG.
-         * @param onlyInDebugMode If the log should only be active when the Logger is in debug-mode.
+         * @param onlyInDebugMode If the log should only be active when the Logger is in debug-mode
          *                        (Default is false).
          * @return The current LOG to be used further.
          */
@@ -327,7 +344,7 @@ public class Logger
         }
         /**
          * Set the verbose-state of this LOG.
-         * @param onlyInVerboseMode If the log should only be active when the Logger is in verbose-mode.
+         * @param onlyInVerboseMode If the log should only be active when the Logger is in verbose-mode
          *                          (Default is false).
          * @return The current LOG to be used further.
          */
@@ -336,10 +353,22 @@ public class Logger
             onlyVerbose = onlyInVerboseMode;
             return this;
         }
+        /**
+         * Stop this log from using the prefix information.
+         * The removed prefix information is the time, log-level and error-code.
+         * @param onlyPlaintext If the log should ignore the prefix
+         *                      (Default is false).
+         * @return The current LOG to be used further.
+         */
+        public LOG PLAINTEXT(boolean onlyPlaintext)
+        {
+            plainText = onlyPlaintext;
+            return this;
+        }
 
         static LOG copyLogSettings(String text, LOG original)
         {
-            return new LOG(text).COLOR(original.color).LEVEL(original.loglevel).FILE_ENTRY(original.fileEntry).DEBUG(original.onlyDebug).VERBOSE(original.onlyVerbose);
+            return new LOG(text).COLOR(original.color).LEVEL(original.loglevel).FILE_ENTRY(original.fileEntry).DEBUG(original.onlyDebug).VERBOSE(original.onlyVerbose).PLAINTEXT(original.plainText);
         }
     }
 
