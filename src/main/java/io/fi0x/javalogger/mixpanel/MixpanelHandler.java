@@ -1,4 +1,4 @@
-package io.fi0x.javalogger;
+package io.fi0x.javalogger.mixpanel;
 
 import com.mixpanel.mixpanelapi.ClientDelivery;
 import com.mixpanel.mixpanelapi.MessageBuilder;
@@ -12,6 +12,9 @@ import java.util.Map;
 
 public class MixpanelHandler
 {
+    private static Thread runner = null;
+    private static long updateDelay = 5000;
+
     private static MessageBuilder builder;
     private static ClientDelivery delivery;
 
@@ -22,6 +25,43 @@ public class MixpanelHandler
 
     private MixpanelHandler()
     {
+    }
+
+    /**
+     * Start a background {@link Thread}
+     * that will send all messages in the queue every x seconds.
+     * @param messageDelayMillis The delay in milliseconds between each send-operation.
+     *                           Using a longer delay will make the {@link Thread} less responsive when stopping it again.
+     *                           The delay can't be set below 1000. Smaller delays will increase network-load.
+     * @return True if the {@link Thread} was started successfully, False if the {@link Thread} was already running.
+     */
+    public static boolean startAutoUploader(long messageDelayMillis)
+    {
+        createRunnerThread();
+
+        if(runner.isAlive())
+            return false;
+
+        updateDelay = messageDelayMillis;
+        runner.start();
+        return true;
+    }
+    /**
+     * Interrupt the background {@link Thread} that sends messages automatically.
+     * @param force Will force a {@link Thread}.stop() command.
+     *              This should only be used if the messageDelay for the {@link Thread} was very high.
+     * @return True if the {@link Thread} was interrupted, False if the {@link Thread} was not running.
+     */
+    public static boolean stopAutoUploader(@Deprecated boolean force)
+    {
+        if(runner == null || !runner.isAlive())
+            return false;
+
+        if(force)
+            runner.stop();
+        else
+            runner.interrupt();
+        return true;
     }
 
     /**
@@ -121,5 +161,27 @@ public class MixpanelHandler
         if(builder == null)
             builder = new MessageBuilder(projectToken);
         return builder;
+    }
+
+    private static void createRunnerThread()
+    {
+        if(runner != null)
+            return;
+
+        runner = new Thread(() ->
+        {
+            while(!Thread.interrupted())
+            {
+                sendMessages();
+
+                try
+                {
+                    Thread.sleep(Math.max(updateDelay, 1000));
+                } catch(InterruptedException e)
+                {
+                    break;
+                }
+            }
+        });
     }
 }
