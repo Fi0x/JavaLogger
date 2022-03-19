@@ -4,9 +4,9 @@
 name: Maven Package
 
 on:
-  release:
-    types: [created]
   push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -18,18 +18,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 8
+    - name: Set up JDK 8 for Maven Central Repository
       uses: actions/setup-java@v2
       with:
         java-version: '8'
         distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        server-id: gossrh
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -X -e
+    - name: Publish to Maven Central
+      run: mvn --batch-mode deploy
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
