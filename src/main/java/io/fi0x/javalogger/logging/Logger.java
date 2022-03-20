@@ -108,16 +108,16 @@ public class Logger
      * it will only be processed if the {@link Logger} has activated that mode.
      * @param log The {@link LogEntry} that should be processed.
      */
-    public void log(LogEntry log)
+    public static void log(LogEntry log)
     {
-        if((log.onlyDebug && isDebug) || (log.onlyVerbose && isVerbose) || (!log.onlyVerbose && !log.onlyDebug))
+        if((log.onlyDebug && getInstance().isDebug) || (log.onlyVerbose && getInstance().isVerbose) || (!log.onlyVerbose && !log.onlyDebug))
         {
             String logOutput = createLogString(log);
             System.out.println(log.color + logOutput + RESET);
 
             if(log.fileEntry)
             {
-                addEntryToLogFile(log, logOutput);
+                getInstance().addEntryToLogFile(log, logOutput);
             }
         }
     }
@@ -127,7 +127,7 @@ public class Logger
      * @param templateName The name of the {@link LogTemplate} that should be used.
      * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
-    public boolean log(String text, String templateName)
+    public static boolean log(String text, String templateName)
     {
         LogEntry log;
         try
