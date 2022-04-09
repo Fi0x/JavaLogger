@@ -3,6 +3,8 @@ package io.fi0x.javalogger.mixpanel;
 import com.mixpanel.mixpanelapi.ClientDelivery;
 import com.mixpanel.mixpanelapi.MessageBuilder;
 import com.mixpanel.mixpanelapi.MixpanelAPI;
+import io.fi0x.javalogger.logging.LogEntry;
+import io.fi0x.javalogger.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,7 +14,10 @@ import java.util.Map;
 
 public class MixpanelHandler
 {
+    @Deprecated
     private static Thread runner = null;
+
+    private static Thread uploader = null;
     private static long updateDelay = 5000;
 
     private static MessageBuilder builder;
@@ -35,14 +40,14 @@ public class MixpanelHandler
      *                           The delay can't be set below 1000. Smaller delays will increase network-load.
      * @return True if the {@link Thread} was started successfully, False if the {@link Thread} was already running.
      */
-    public static boolean startAutoUploader(long messageDelayMillis)
+    @Deprecated
+    public static boolean startAutoUploader(@Deprecated long messageDelayMillis)
     {
         createRunnerThread();
 
         if(runner.isAlive())
             return false;
 
-        updateDelay = messageDelayMillis;
         runner.start();
         return true;
     }
@@ -52,6 +57,7 @@ public class MixpanelHandler
      *              This should only be used if the messageDelay for the {@link Thread} was very high.
      * @return True if the {@link Thread} was interrupted, False if the {@link Thread} was not running.
      */
+    @Deprecated
     public static boolean stopAutoUploader(@Deprecated boolean force)
     {
         if(runner == null || !runner.isAlive())
@@ -65,7 +71,8 @@ public class MixpanelHandler
     }
 
     /**
-     * Send all collected messages to Mixpanel.
+     * Send all collected messages to Mixpanel immediately.
+     * This will skip the delay between mixpanel messages.
      * @return True if delivery was successful, False if there is no delivery or another problem occured.
      */
     public static boolean sendMessages()
@@ -73,16 +80,10 @@ public class MixpanelHandler
         if(delivery == null)
             return false;
 
-        try
-        {
-            new MixpanelAPI().deliver(delivery);
-        } catch(IOException e)
-        {
-            return false;
-        }
+        if(uploader != null)
+            uploader.interrupt();
 
-        delivery = null;
-        return true;
+        return sendDelivery();
     }
 
     /**
@@ -97,7 +98,10 @@ public class MixpanelHandler
     public static boolean addMessage(String eventName, Map<String, String> properties)
     {
         if(eventName == null || userID == null || projectToken == null)
+        {
+            Logger.log("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null", "warning");
             return false;
+        }
 
         if(properties == null)
             properties = new HashMap<>();
@@ -118,6 +122,7 @@ public class MixpanelHandler
             delivery = new ClientDelivery();
 
         delivery.addMessage(getBuilder().event(userID, eventName, props));
+        startUploaderThread();
         return true;
     }
 
@@ -136,13 +141,26 @@ public class MixpanelHandler
         defaultProperties.put(propertyName, propertyValue);
         return true;
     }
+    /**
+     * Set the minimum millisecond delay between each mixpanel delivery.
+     * @param minMillisBetweenMessages The time in millis between each mixpanel delivery that should be sent (Min 500, Default is 5000).
+     * @return True if the new delay was set, False if the delay was too short.
+     */
+    public static boolean setMilliDelay(long minMillisBetweenMessages)
+    {
+        if(minMillisBetweenMessages < 500)
+            return false;
+
+        updateDelay = minMillisBetweenMessages;
+        return true;
+    }
 
     /**
      * Set the project-token that can be obtained from Mixpanel.
      * This is required to successfully send messages to Mixpanel.
      * @param mixpanelProjectToken The token of you Mixpanel project.
      */
-    public static void setProject(String mixpanelProjectToken)
+    public static void setProjectToken(String mixpanelProjectToken)
     {
         projectToken = mixpanelProjectToken;
     }
@@ -151,7 +169,7 @@ public class MixpanelHandler
      * You can use a username or UUID to identify users and track them on Mixpanel.
      * @param distinctMixpanelID The distinctID that is added to each Mixpanel message.
      */
-    public static void setUniqueID(String distinctMixpanelID)
+    public static void setUniqueUserID(String distinctMixpanelID)
     {
         userID = distinctMixpanelID;
     }
@@ -163,6 +181,7 @@ public class MixpanelHandler
         return builder;
     }
 
+    @Deprecated
     private static void createRunnerThread()
     {
         if(runner != null)
@@ -172,7 +191,8 @@ public class MixpanelHandler
         {
             while(!Thread.interrupted())
             {
-                sendMessages();
+                if(!sendMessages())
+                    Logger.log(new LogEntry("Could not upload a Mixpanel delivery", "info"));
 
                 try
                 {
@@ -183,5 +203,42 @@ public class MixpanelHandler
                 }
             }
         });
+    }
+    private static void startUploaderThread()
+    {
+        if(uploader == null)
+        {
+            uploader = new Thread(() ->
+            {
+                try
+                {
+                    Thread.sleep(updateDelay);
+                } catch(InterruptedException e)
+                {
+                    return;
+                }
+
+                if(!sendDelivery())
+                    Logger.log(new LogEntry("Could not upload a Mixpanel delivery", "warning"));
+            });
+        }
+
+        if(!uploader.isAlive())
+            uploader.start();
+
+    }
+
+    private static boolean sendDelivery()
+    {
+        try
+        {
+            new MixpanelAPI().deliver(delivery);
+        } catch(IOException e)
+        {
+            return false;
+        }
+
+        delivery = null;
+        return true;
     }
 }

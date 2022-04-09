@@ -12,8 +12,10 @@ class LogTemplate
     boolean onlyVerbose;
     boolean onlyDebug;
     boolean plainText;
+    boolean mixpanelMessage;
+    String mixpanelEventName;
 
-    LogTemplate(String color, String level, boolean writeToFile, boolean requireVerbose, boolean requireDebug, boolean noPrefix)
+    LogTemplate(String color, String level, boolean writeToFile, boolean requireVerbose, boolean requireDebug, boolean noPrefix, boolean mixpanelMessage, String mixpanelEventName)
     {
         this.color = color;
         this.loglevel = level;
@@ -21,5 +23,7 @@ class LogTemplate
         this.onlyVerbose = requireVerbose;
         this.onlyDebug = requireDebug;
         this.plainText = noPrefix;
+        this.mixpanelMessage = mixpanelMessage;
+        this.mixpanelEventName = mixpanelEventName;
     }
 }

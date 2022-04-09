@@ -21,6 +21,8 @@ public class LogEntry
     boolean onlyVerbose = false;
     boolean onlyDebug = false;
     boolean plainText = false;
+    boolean mixpanel = false;
+    String mixpanelEventName = "LOG";
 
     /**
      * Create a new {@link LogEntry} with the given text.
@@ -51,6 +53,8 @@ public class LogEntry
         this.onlyVerbose = t.onlyVerbose;
         this.onlyDebug = t.onlyDebug;
         this.plainText = t.plainText;
+        this.mixpanel = t.mixpanelMessage;
+        this.mixpanelEventName = t.mixpanelEventName;
     }
 
     /**
@@ -143,6 +147,30 @@ public class LogEntry
     public LogEntry PLAINTEXT(boolean onlyPlaintext)
     {
         plainText = onlyPlaintext;
+        return this;
+    }
+    /**
+     * Require this {@link LogEntry} to send its information to Mixpanel.
+     * This requires you to set up the {@link io.fi0x.javalogger.mixpanel.MixpanelHandler} correctly.
+     * @param sendToMixpanel If the {@link LogEntry} should send its information to Mixpanel
+     *                      (Default is false).
+     * @return The current {@link LogEntry} to be used further.
+     */
+    public LogEntry MIXPANEL(boolean sendToMixpanel)
+    {
+        mixpanel = sendToMixpanel;
+        return this;
+    }
+    /**
+     * Change the Mixpanel event name for this {@link LogEntry}.
+     * Using Mixpanel Logs requires you to set up the {@link io.fi0x.javalogger.mixpanel.MixpanelHandler} correctly.
+     * @param mixpanelEvent The event name under which this {@link LogEntry} should be displayed in Mixpanel
+     *                      (Default is 'LOG').
+     * @return The current {@link LogEntry} to be used further.
+     */
+    public LogEntry MIXPANELNAME(String mixpanelEvent)
+    {
+        mixpanelEventName = mixpanelEvent;
         return this;
     }
 }
