@@ -155,6 +155,8 @@ public class Logger
      * @param onlyDebug If {@link LogEntry}s with these settings should only be visible in debug-mode.
      * @param onlyVerbose If {@link LogEntry}s with these settings should only be visible in verbose-mode.
      * @param hidePrefix If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName The name of the Mixpanel-event.
      * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} already existed.
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
@@ -193,6 +195,8 @@ public class Logger
      * @param onlyDebug If {@link LogEntry}s with these settings should only be visible in debug-mode.
      * @param onlyVerbose If {@link LogEntry}s with these settings should only be visible in verbose-mode.
      * @param hidePrefix If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName The name of the Mixpanel-event.
      * @return True if the {@link LogTemplate} was updated successfully, False if the name was not found.
      */
     public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
