@@ -1,5 +1,7 @@
 package io.fi0x.javalogger.logging;
 
+import io.fi0x.javalogger.mixpanel.MixpanelHandler;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,10 +34,10 @@ public class Logger
     public static final String WHITE = "\u001B[37m";
 
     static Map<String, LogTemplate> templates = new HashMap<String,LogTemplate>() {{
-        put("verbose", new LogTemplate(WHITE, "VER", false, true, false, false));
-        put("info", new LogTemplate(WHITE, "INF", true, true, true, false));
-        put("warning", new LogTemplate(YELLOW, "WRN", true, false, false, false));
-        put("error", new LogTemplate(RED, "ERR", true, false, false, false));
+        put("verbose", new LogTemplate(WHITE, "VER", false, true, false, false, false, "LOG"));
+        put("info", new LogTemplate(WHITE, "INF", true, true, true, false, false, "LOG"));
+        put("warning", new LogTemplate(YELLOW, "WRN", true, false, false, false, true, "LOG"));
+        put("error", new LogTemplate(RED, "ERR", true, false, false, false, true, "LOG"));
     }};
 
     private Logger()
@@ -116,9 +118,10 @@ public class Logger
             System.out.println(log.color + logOutput + RESET);
 
             if(log.fileEntry)
-            {
                 getInstance().addEntryToLogFile(log, logOutput);
-            }
+
+            if(log.mixpanel)
+                sendMixpanelMessage(log);
         }
     }
     /**
@@ -154,12 +157,32 @@ public class Logger
      * @param hidePrefix If only the actual message without timestamp, logging-level and error-code should be shown.
      * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} already existed.
      */
-    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
+    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         if(templates.containsKey(templateName))
             return false;
-        templates.put(templateName, new LogTemplate(colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix));
+        templates.put(templateName, new LogTemplate(colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName));
         return true;
+    }
+    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
+    }
+    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
+    }
+    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false);
+    }
+    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false, false, false);
+    }
+    public static boolean createNewTemplate(String templateName, String colorCode, String logLevel)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, true, false, false, false, false);
     }
     /**
      * Update a specific {@link LogTemplate}.
@@ -172,12 +195,32 @@ public class Logger
      * @param hidePrefix If only the actual message without timestamp, logging-level and error-code should be shown.
      * @return True if the {@link LogTemplate} was updated successfully, False if the name was not found.
      */
-    public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
+    public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         if(!templates.containsKey(templateName))
             return false;
-        templates.put(templateName, new LogTemplate(colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix));
+        templates.put(templateName, new LogTemplate(colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName));
         return true;
+    }
+    public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
+    {
+        return updateTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
+    }
+    public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
+    {
+        return updateTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
+    }
+    public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
+    {
+        return updateTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false);
+    }
+    public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
+    {
+        return updateTemplate(templateName, colorCode, logLevel, writeToFile, false, false, false, false);
+    }
+    public static boolean updateTemplate(String templateName, String colorCode, String logLevel)
+    {
+        return updateTemplate(templateName, colorCode, logLevel, true, false, false, false, false);
     }
 
     private static String createLogString(LogEntry log)
@@ -218,6 +261,20 @@ public class Logger
         {
             System.out.println(RED + "Something went wrong when writing to the log-file" + RESET);
         }
+    }
+
+    private static void sendMixpanelMessage(LogEntry entry)
+    {
+        Map<String, String> props = new HashMap<>();
+
+        props.put(createLogString(entry), entry.message);
+        props.put("logLevel", entry.loglevel);
+        if(entry.errorCode != 0)
+            props.put("errorCode", String.valueOf(entry.errorCode));
+        if(entry.exception != null)
+            props.put("exception", Arrays.toString(entry.exception.getStackTrace()));
+
+        MixpanelHandler.addMessage(entry.mixpanelEventName, props);
     }
 
     private static String getLogFileDate()
