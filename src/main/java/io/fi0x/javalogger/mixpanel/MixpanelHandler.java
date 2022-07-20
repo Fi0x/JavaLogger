@@ -99,7 +99,7 @@ public class MixpanelHandler
     {
         if(eventName == null || userID == null || projectToken == null)
         {
-            Logger.log("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null", "warning");
+            Logger.log("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null", "info");
             return false;
         }
 
@@ -219,7 +219,7 @@ public class MixpanelHandler
                 }
 
                 if(!sendDelivery())
-                    Logger.log(new LogEntry("Could not upload a Mixpanel delivery", "warning"));
+                    Logger.log(new LogEntry("Could not upload a Mixpanel delivery", "info"));
             });
         }
 
