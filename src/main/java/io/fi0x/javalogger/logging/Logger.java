@@ -144,6 +144,10 @@ public class Logger
         log(log);
         return true;
     }
+    public static boolean log(String text, Enum<?> template)
+    {
+        return log(text, template.name());
+    }
 
     /**
      * Create a new {@link LogTemplate} for logging
@@ -161,10 +165,13 @@ public class Logger
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
-        if(templates.containsKey(templateName))
-            return false;
+        boolean isNew = !templates.containsKey(templateName);
         templates.put(templateName, new LogTemplate(colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName));
-        return true;
+        return isNew;
+    }
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
+    {
+        return createNewTemplate(templateName.name(), colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
