@@ -146,7 +146,7 @@ public class MixpanelHandler
         return builder;
     }
 
-    private static void startUploaderThread()
+    private static synchronized void startUploaderThread()
     {
         if(uploader == null)
         {
