@@ -12,5 +12,6 @@ public class TestLogger
                 .CODE(0)
                 .FILE_ENTRY(false);
         Logger.log(l);
+        Logger.createNewTemplate("", "", "");
     }
 }

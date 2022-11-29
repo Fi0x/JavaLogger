@@ -153,6 +153,9 @@ public class Logger
         log(log);
         return true;
     }
+    /**
+     * @see #log(String, String)
+     */
     public static boolean log(String text, Enum<?> template)
     {
         return log(text, template.name());
@@ -171,7 +174,7 @@ public class Logger
      * @param hidePrefix If only the actual message without timestamp, logging-level and error-code should be shown.
      * @param mixpanelMessage If the {@link LogEntry} should be sent to Mixpanel.
      * @param mixpanelName The name of the Mixpanel-event.
-     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} already existed.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
@@ -179,60 +182,100 @@ public class Logger
         templates.put(templateName, new LogTemplate(colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName));
         return isNew;
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName.name(), colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, false, false, false, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, writeToFile, false, false, false, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, true, false, false, false, false, "LOG");
     }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel)
     {
         return createNewTemplate(templateName, colorCode, BLACK_BACKGROUND, logLevel, true, false, false, false, false, "LOG");
     }
     /**
      * Update a specific {@link LogTemplate}.
+     * @deprecated Use the createNewTemplate method instead to overwrite existing templates.
      * @param templateName The name of the {@link LogTemplate}.
      * @param colorCode The new color.
      * @param logLevel The new logging-level.
@@ -252,22 +295,42 @@ public class Logger
         templates.put(templateName, new LogTemplate(colorCode, BLACK_BACKGROUND, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName));
         return true;
     }
+    /**
+     * @see #updateTemplate(String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
+    @Deprecated(since = "1.1.6", forRemoval = true)
     public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return updateTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
+    /**
+     * @see #updateTemplate(String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
+    @Deprecated(since = "1.1.6", forRemoval = true)
     public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return updateTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
     }
+    /**
+     * @see #updateTemplate(String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
+    @Deprecated(since = "1.1.6", forRemoval = true)
     public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return updateTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false);
     }
+    /**
+     * @see #updateTemplate(String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
+    @Deprecated(since = "1.1.6", forRemoval = true)
     public static boolean updateTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return updateTemplate(templateName, colorCode, logLevel, writeToFile, false, false, false, false);
     }
+    /**
+     * @see #updateTemplate(String, String, String, boolean, boolean, boolean, boolean, boolean, String)
+     */
+    @Deprecated(since = "1.1.6", forRemoval = true)
     public static boolean updateTemplate(String templateName, String colorCode, String logLevel)
     {
         return updateTemplate(templateName, colorCode, logLevel, true, false, false, false, false);
