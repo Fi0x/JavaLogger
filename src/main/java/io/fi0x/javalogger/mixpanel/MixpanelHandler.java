@@ -5,6 +5,7 @@ import com.mixpanel.mixpanelapi.MessageBuilder;
 import com.mixpanel.mixpanelapi.MixpanelAPI;
 import io.fi0x.javalogger.logging.LogEntry;
 import io.fi0x.javalogger.logging.Logger;
+import io.fi0x.javalogger.logging.LogColor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +60,7 @@ public class MixpanelHandler
         if(eventName == null || userID == null || projectToken == null)
         {
             LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null")
-                    .COLOR(Logger.RED)
+                    .COLOR(LogColor.RED)
                     .LEVEL("ERR")
                     .CODE(0)
                     .FILE_ENTRY(false);
@@ -162,7 +163,7 @@ public class MixpanelHandler
                 if(!sendDelivery())
                 {
                     LogEntry l = new LogEntry("Could not upload a Mixpanel delivery")
-                            .COLOR(Logger.RED)
+                            .COLOR(LogColor.RED)
                             .LEVEL("ERR")
                             .CODE(0)
                             .FILE_ENTRY(false);

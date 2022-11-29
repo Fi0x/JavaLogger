@@ -13,8 +13,8 @@ package io.fi0x.javalogger.logging;
 public class LogEntry
 {
     final String message;
-    String color = Logger.RESET;
-    String background = Logger.RESET;
+    String color = "";
+    String background = "";
     String loglevel = "INF";
     int errorCode = 0;
     Exception exception = null;
