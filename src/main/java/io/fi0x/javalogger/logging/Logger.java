@@ -177,7 +177,15 @@ public class Logger
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
+    }
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
+    }
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
     }
@@ -185,11 +193,23 @@ public class Logger
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false);
     }
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false, false);
+    }
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false, false, false);
     }
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false, false, false);
+    }
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel)
+    {
+        return createNewTemplate(templateName, colorCode, logLevel, true, false, false, false, false);
+    }
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel)
     {
         return createNewTemplate(templateName, colorCode, logLevel, true, false, false, false, false);
     }
