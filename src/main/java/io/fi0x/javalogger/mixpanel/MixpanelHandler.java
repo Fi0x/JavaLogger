@@ -146,7 +146,7 @@ public class MixpanelHandler
         return builder;
     }
 
-    private static synchronized void startUploaderThread()
+    private static void startUploaderThread()
     {
         if(uploader == null)
         {
@@ -157,6 +157,7 @@ public class MixpanelHandler
                     Thread.sleep(updateDelay);
                 } catch(InterruptedException e)
                 {
+                    uploader = null;
                     return;
                 }
 
@@ -169,12 +170,13 @@ public class MixpanelHandler
                             .FILE_ENTRY(false);
                     Logger.log(l);
                 }
+
+                uploader = null;
             });
         }
 
         if(!uploader.isAlive())
             uploader.start();
-
     }
 
     private static boolean sendDelivery()
