@@ -24,41 +24,6 @@ public class Logger
     private boolean isVerbose;
     private boolean smallLog;
 
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    static final String RESET = "\u001B[0m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String BLACK = "\u001B[30m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String RED = "\u001B[31m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String GREEN = "\u001B[32m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String YELLOW = "\u001B[33m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String BLUE = "\u001B[34m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String PURPLE = "\u001B[35m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String CYAN = "\u001B[36m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String WHITE = "\u001B[37m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String BLACK_BACKGROUND = "\u001B[40m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String RED_BACKGROUND = "\u001B[41m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String GREEN_BACKGROUND = "\u001B[42m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String YELLOW_BACKGROUND = "\u001B[43m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String BLUE_BACKGROUND = "\u001B[44m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String PURPLE_BACKGROUND = "\u001B[45m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String CYAN_BACKGROUND = "\u001B[46m";
-    @Deprecated(since = "1.1.7", forRemoval = true)
-    public static final String WHITE_BACKGROUND = "\u001B[47m";
-
     static Map<String, LogTemplate> templates = new HashMap<String,LogTemplate>() {{
         put(TEMPLATE.VERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, false, false, false, "LOG"));
         put(TEMPLATE.INFO.name(), new LogTemplate(LogColor.WHITE, "", "INF", true, true, true, false, false, "LOG"));
@@ -154,9 +119,11 @@ public class Logger
      * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
      * @param text The message to log.
      * @param templateName The name of the {@link LogTemplate} that should be used.
+     * @param e The exception that should get logged (Default is null).
+     * @param errorCode The code for the error that occured (Default is 0).
      * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
-    public static boolean log(String text, String templateName)
+    public static boolean log(String text, String templateName, Exception e, int errorCode)
     {
         LogEntry log;
         try
@@ -167,15 +134,46 @@ public class Logger
             return false;
         }
 
+        log.EXCEPTION(e);
+        log.CODE(errorCode);
+
         log(log);
         return true;
     }
     /**
-     * @see #log(String, String)
+     * @see #log(String, String, Exception, int)
+     */
+    public static boolean log(String text, Enum<?> templateName, Exception e, int errorCode)
+    {
+        return log(text, templateName.name(), e, errorCode);
+    }
+    /**
+     * @see #log(String, String, Exception, int)
+     */
+    public static boolean log(String text, String templateName, Exception e)
+    {
+        return log(text, templateName, e, 0);
+    }
+    /**
+     * @see #log(String, String, Exception, int)
+     */
+    public static boolean log(String text, Enum<?> templateName, Exception e)
+    {
+        return log(text, templateName, e, 0);
+    }
+    /**
+     * @see #log(String, String, Exception, int)
+     */
+    public static boolean log(String text, String templateName)
+    {
+        return log(text, templateName, null);
+    }
+    /**
+     * @see #log(String, String, Exception, int)
      */
     public static boolean log(String text, Enum<?> template)
     {
-        return log(text, template.name());
+        return log(text, template, null);
     }
 
     /**
@@ -341,7 +339,7 @@ public class Logger
     {
         Map<String, String> props = new HashMap<>();
 
-        props.put(createLogString(entry), entry.message);
+        props.put("message", createLogString(entry));
         props.put("logLevel", entry.loglevel);
         if(entry.errorCode != 0)
             props.put("errorCode", String.valueOf(entry.errorCode));

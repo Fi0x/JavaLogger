@@ -58,6 +58,10 @@ public class LogEntry
         this.mixpanel = t.mixpanelMessage;
         this.mixpanelEventName = t.mixpanelEventName;
     }
+    public LogEntry(String text, Enum<?> templateName) throws IllegalArgumentException
+    {
+        this(text, templateName.name());
+    }
 
     /**
      * Change the color that should be used when the {@link LogEntry} is printed.
