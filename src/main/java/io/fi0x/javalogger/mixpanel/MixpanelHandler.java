@@ -14,9 +14,6 @@ import java.util.Map;
 
 public class MixpanelHandler
 {
-    @Deprecated
-    private static Thread runner = null;
-
     private static Thread uploader = null;
     private static long updateDelay = 5000;
 
@@ -30,44 +27,6 @@ public class MixpanelHandler
 
     private MixpanelHandler()
     {
-    }
-
-    /**
-     * Start a background {@link Thread}
-     * that will send all messages in the queue every x seconds.
-     * @param messageDelayMillis The delay in milliseconds between each send-operation.
-     *                           Using a longer delay will make the {@link Thread} less responsive when stopping it again.
-     *                           The delay can't be set below 1000. Smaller delays will increase network-load.
-     * @return True if the {@link Thread} was started successfully, False if the {@link Thread} was already running.
-     */
-    @Deprecated
-    public static boolean startAutoUploader(@Deprecated long messageDelayMillis)
-    {
-        createRunnerThread();
-
-        if(runner.isAlive())
-            return false;
-
-        runner.start();
-        return true;
-    }
-    /**
-     * Interrupt the background {@link Thread} that sends messages automatically.
-     * @param force Will force a {@link Thread}.stop() command.
-     *              This should only be used if the messageDelay for the {@link Thread} was very high.
-     * @return True if the {@link Thread} was interrupted, False if the {@link Thread} was not running.
-     */
-    @Deprecated
-    public static boolean stopAutoUploader(@Deprecated boolean force)
-    {
-        if(runner == null || !runner.isAlive())
-            return false;
-
-        if(force)
-            runner.stop();
-        else
-            runner.interrupt();
-        return true;
     }
 
     /**
@@ -99,7 +58,12 @@ public class MixpanelHandler
     {
         if(eventName == null || userID == null || projectToken == null)
         {
-            Logger.log("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null", "info");
+            LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null")
+                    .COLOR(Logger.RED)
+                    .LEVEL("ERR")
+                    .CODE(0)
+                    .FILE_ENTRY(false);
+            Logger.log(l);
             return false;
         }
 
@@ -181,29 +145,6 @@ public class MixpanelHandler
         return builder;
     }
 
-    @Deprecated
-    private static void createRunnerThread()
-    {
-        if(runner != null)
-            return;
-
-        runner = new Thread(() ->
-        {
-            while(!Thread.interrupted())
-            {
-                if(!sendMessages())
-                    Logger.log(new LogEntry("Could not upload a Mixpanel delivery", "info"));
-
-                try
-                {
-                    Thread.sleep(Math.max(updateDelay, 1000));
-                } catch(InterruptedException e)
-                {
-                    break;
-                }
-            }
-        });
-    }
     private static void startUploaderThread()
     {
         if(uploader == null)
@@ -219,7 +160,14 @@ public class MixpanelHandler
                 }
 
                 if(!sendDelivery())
-                    Logger.log(new LogEntry("Could not upload a Mixpanel delivery", "info"));
+                {
+                    LogEntry l = new LogEntry("Could not upload a Mixpanel delivery")
+                            .COLOR(Logger.RED)
+                            .LEVEL("ERR")
+                            .CODE(0)
+                            .FILE_ENTRY(false);
+                    Logger.log(l);
+                }
             });
         }
 

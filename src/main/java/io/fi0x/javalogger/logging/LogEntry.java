@@ -14,6 +14,7 @@ public class LogEntry
 {
     final String message;
     String color = Logger.RESET;
+    String background = Logger.RESET;
     String loglevel = "INF";
     int errorCode = 0;
     Exception exception = null;
@@ -48,6 +49,7 @@ public class LogEntry
 
         LogTemplate t = Logger.templates.get(templateName);
         this.color = t.color;
+        this.background = t.background;
         this.loglevel = t.loglevel;
         this.fileEntry = t.fileEntry;
         this.onlyVerbose = t.onlyVerbose;
@@ -66,6 +68,17 @@ public class LogEntry
     public LogEntry COLOR(String colorCode)
     {
         color = colorCode;
+        return this;
+    }
+    /**
+     * Change the background-color that should be used when the {@link LogEntry} is printed.
+     * @param colorCode The new background-color code
+     *                  (Default will use the current console-color).
+     * @return The current {@link LogEntry} to be used further.
+     */
+    public LogEntry BACKGROUND(String colorCode)
+    {
+        background = colorCode;
         return this;
     }
     /**

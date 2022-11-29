@@ -7,6 +7,7 @@ package io.fi0x.javalogger.logging;
 class LogTemplate
 {
     String color;
+    String background;
     String loglevel;
     boolean fileEntry;
     boolean onlyVerbose;
@@ -15,9 +16,10 @@ class LogTemplate
     boolean mixpanelMessage;
     String mixpanelEventName;
 
-    LogTemplate(String color, String level, boolean writeToFile, boolean requireVerbose, boolean requireDebug, boolean noPrefix, boolean mixpanelMessage, String mixpanelEventName)
+    LogTemplate(String color, String background, String level, boolean writeToFile, boolean requireVerbose, boolean requireDebug, boolean noPrefix, boolean mixpanelMessage, String mixpanelEventName)
     {
         this.color = color;
+        this.background = background;
         this.loglevel = level;
         this.fileEntry = writeToFile;
         this.onlyVerbose = requireVerbose;
