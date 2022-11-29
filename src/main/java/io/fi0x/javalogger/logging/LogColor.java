@@ -76,14 +76,14 @@ public class LogColor
      */
     public static String get(Color color, Design design)
     {
-        return get(color, design, false, true);
+        return get(color, design, false);
     }
     /**
      * @see #get(Color, Design, boolean, boolean)
      */
     public static String get(Color color)
     {
-        return get(color, Design.NORMAL, false, true);
+        return get(color, Design.NORMAL);
     }
 
     public enum Color
