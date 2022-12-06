@@ -332,6 +332,7 @@ public class Logger
                     .CODE(0)
                     .FILE_ENTRY(false);
             Logger.log(l);
+            e.printStackTrace();
         }
     }
 
@@ -370,6 +371,7 @@ public class Logger
                     .EXCEPTION(e)
                     .FILE_ENTRY(false);
             log(l);
+            e.printStackTrace();
         }
         try
         {
@@ -383,6 +385,7 @@ public class Logger
                     .EXCEPTION(e)
                     .FILE_ENTRY(false);
             log(l);
+            e.printStackTrace();
         }
     }
 

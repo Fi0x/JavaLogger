@@ -43,7 +43,7 @@ public class MixpanelHandler
         if(uploader != null)
             uploader.interrupt();
 
-        return sendDelivery();
+        return sendDelivery() == null;
     }
 
     /**
@@ -161,7 +161,8 @@ public class MixpanelHandler
                     return;
                 }
 
-                if(!sendDelivery())
+                IOException e = sendDelivery();
+                if(e != null)
                 {
                     LogEntry l = new LogEntry("Could not upload a Mixpanel delivery")
                             .COLOR(LogColor.RED)
@@ -169,6 +170,7 @@ public class MixpanelHandler
                             .CODE(0)
                             .FILE_ENTRY(false);
                     Logger.log(l);
+                    e.printStackTrace();
                 }
 
                 uploader = null;
@@ -179,17 +181,17 @@ public class MixpanelHandler
             uploader.start();
     }
 
-    private static boolean sendDelivery()
+    private static IOException sendDelivery()
     {
         try
         {
             new MixpanelAPI().deliver(delivery);
         } catch(IOException e)
         {
-            return false;
+            return e;
         }
 
         delivery = null;
-        return true;
+        return null;
     }
 }
