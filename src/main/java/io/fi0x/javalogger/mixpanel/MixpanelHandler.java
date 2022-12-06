@@ -168,9 +168,9 @@ public class MixpanelHandler
                             .COLOR(LogColor.RED)
                             .LEVEL("ERR")
                             .CODE(0)
+                            .EXCEPTION(e)
                             .FILE_ENTRY(false);
                     Logger.log(l);
-                    e.printStackTrace();
                 }
 
                 uploader = null;
