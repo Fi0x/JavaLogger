@@ -22,6 +22,7 @@ public class LogEntry
     boolean onlyVerbose = false;
     boolean onlyDebug = false;
     boolean plainText = false;
+    boolean consoleException = false;
     boolean mixpanel = false;
     String mixpanelEventName = "LOG";
 
@@ -55,6 +56,7 @@ public class LogEntry
         this.onlyVerbose = t.onlyVerbose;
         this.onlyDebug = t.onlyDebug;
         this.plainText = t.plainText;
+        this.consoleException = t.consoleException;
         this.mixpanel = t.mixpanelMessage;
         this.mixpanelEventName = t.mixpanelEventName;
     }
@@ -164,6 +166,17 @@ public class LogEntry
     public LogEntry PLAINTEXT(boolean onlyPlaintext)
     {
         plainText = onlyPlaintext;
+        return this;
+    }
+    /**
+     * Force this {@link LogEntry} to print exceptions in the console.
+     * @param showExceptionsInConsole If the {@link LogEntry} should display exceptions in the console.
+     *                                (Default is false).
+     * @return The current {@link LogEntry} to be used further.
+     */
+    public LogEntry CONSOLE_EXCEPTIONS(boolean showExceptionsInConsole)
+    {
+        consoleException = showExceptionsInConsole;
         return this;
     }
     /**
