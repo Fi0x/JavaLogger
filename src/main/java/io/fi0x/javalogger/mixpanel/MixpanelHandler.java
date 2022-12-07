@@ -10,8 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MixpanelHandler
 {
@@ -70,6 +69,21 @@ public class MixpanelHandler
 
         if(properties == null)
             properties = new HashMap<>();
+
+        for(String prop : properties.keySet())
+        {
+            if(MIXPANEL_PROPERTIES.contains(prop.toLowerCase(Locale.ROOT)))
+            {
+                LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Property '" + prop + "' is a property mixpanel uses itself")
+                        .COLOR(LogColor.RED)
+                        .LEVEL("ERR")
+                        .CODE(0)
+                        .FILE_ENTRY(false);
+                Logger.log(l);
+                return false;
+            }
+        }
+
         properties.putAll(defaultProperties);
 
         JSONObject props = new JSONObject();
@@ -101,6 +115,9 @@ public class MixpanelHandler
     public static boolean addDefaultProperty(String propertyName, String propertyValue)
     {
         if(defaultProperties.containsKey(propertyName))
+            return false;
+
+        if(MIXPANEL_PROPERTIES.contains(propertyName.toLowerCase(Locale.ROOT)))
             return false;
 
         defaultProperties.put(propertyName, propertyValue);
@@ -194,4 +211,14 @@ public class MixpanelHandler
         delivery = null;
         return null;
     }
+    private static final ArrayList<String> MIXPANEL_PROPERTIES = new ArrayList<>()
+            {{
+                    add("api endpoint");
+                    add("api timestamp");
+                    add("distinct id");
+                    add("insert id");
+                    add("mixpanel library");
+                    add("time");
+                    add("time processed");
+            }};
 }
