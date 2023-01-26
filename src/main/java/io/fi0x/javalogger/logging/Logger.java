@@ -116,9 +116,10 @@ public class Logger
      */
     public static void log(LogEntry log)
     {
+        String logOutput = createLogString(log);
+
         if((log.onlyDebug && getInstance().isDebug) || (log.onlyVerbose && getInstance().isVerbose) || (!log.onlyVerbose && !log.onlyDebug))
         {
-            String logOutput = createLogString(log);
             System.out.println(log.color + log.background + logOutput + LogColor.RESET);
 
             if(log.exception != null)
@@ -126,13 +127,13 @@ public class Logger
                 if(getInstance().consoleExceptions || log.consoleException)
                     log.exception.printStackTrace();
             }
-
-            if(log.fileEntry)
-                getInstance().addEntryToLogFile(log, logOutput);
-
-            if(log.mixpanel)
-                sendMixpanelMessage(log);
         }
+
+        if(log.fileEntry)
+            getInstance().addEntryToLogFile(log, logOutput);
+
+        if(log.mixpanel)
+            sendMixpanelMessage(log);
     }
     /**
      * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
