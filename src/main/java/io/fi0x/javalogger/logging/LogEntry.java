@@ -20,6 +20,7 @@ public class LogEntry
     Exception exception = null;
     boolean fileEntry = true;
     boolean onlyVerbose = false;
+    int verboseLevel = 0;
     boolean onlyDebug = false;
     boolean plainText = false;
     boolean consoleException = false;
@@ -54,6 +55,7 @@ public class LogEntry
         this.loglevel = t.loglevel;
         this.fileEntry = t.fileEntry;
         this.onlyVerbose = t.onlyVerbose;
+        this.verboseLevel = t.verboseLevel;
         this.onlyDebug = t.onlyDebug;
         this.plainText = t.plainText;
         this.consoleException = t.consoleException;
@@ -154,6 +156,17 @@ public class LogEntry
     public LogEntry VERBOSE(boolean onlyInVerboseMode)
     {
         onlyVerbose = onlyInVerboseMode;
+        return this;
+    }
+    /**
+     * Set the verbose-level of this {@link LogEntry}.
+     * @param verboseLvl The verbose-level of the Logger which is at least required to show this message.
+     *                   (Default is 0)
+     * @return The current {@link LogEntry} to be used further.
+     */
+    public LogEntry LEVEL(int verboseLvl)
+    {
+        verboseLevel = verboseLvl;
         return this;
     }
     /**

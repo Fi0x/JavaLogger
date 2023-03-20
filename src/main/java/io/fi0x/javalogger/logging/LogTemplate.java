@@ -11,19 +11,21 @@ class LogTemplate
     String loglevel;
     boolean fileEntry;
     boolean onlyVerbose;
+    int verboseLevel;
     boolean onlyDebug;
     boolean plainText;
     boolean consoleException;
     boolean mixpanelMessage;
     String mixpanelEventName;
 
-    LogTemplate(String color, String background, String level, boolean writeToFile, boolean requireVerbose, boolean requireDebug, boolean noPrefix, boolean showExceptionInConsole, boolean mixpanelMessage, String mixpanelEventName)
+    LogTemplate(String color, String background, String level, boolean writeToFile, boolean requireVerbose, int verboseLevel, boolean requireDebug, boolean noPrefix, boolean showExceptionInConsole, boolean mixpanelMessage, String mixpanelEventName)
     {
         this.color = color;
         this.background = background;
         this.loglevel = level;
         this.fileEntry = writeToFile;
         this.onlyVerbose = requireVerbose;
+        this.verboseLevel = verboseLevel;
         this.onlyDebug = requireDebug;
         this.plainText = noPrefix;
         this.consoleException = showExceptionInConsole;
