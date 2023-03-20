@@ -133,7 +133,7 @@ public class Logger
         boolean verboseOK = !log.onlyVerbose || getInstance().isVerbose;
         boolean verboseLevelOK = log.verboseLevel <= getInstance().verboseLevel;
 
-        if(debugOK || (verboseOK && verboseLevelOK))
+        if(debugOK && verboseOK && verboseLevelOK)
         {
             System.out.println(log.color + log.background + logOutput + LogColor.RESET);
 
