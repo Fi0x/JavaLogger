@@ -366,7 +366,7 @@ public class Logger
     }
     private static String getLogEntryDate()
     {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss:SSS");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
         LocalDateTime now = LocalDateTime.now();
 
         return "[" + dtf.format(now) + "]";
