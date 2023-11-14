@@ -25,13 +25,23 @@ public class Logger
     private int verboseLevel = 0;
     private boolean smallLog;
     private boolean consoleExceptions;
+    private boolean projectName;
 
     static Map<String, LogTemplate> templates = new HashMap<>()
     {{
-        put(TEMPLATE.VERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 0, false, false, false, false, "LOG"));
-        put(TEMPLATE.INFO.name(), new LogTemplate(LogColor.WHITE, "", "INF", true, true, 0, true, false, false, false, "LOG"));
-        put(TEMPLATE.WARNING.name(), new LogTemplate(LogColor.YELLOW, "", "WRN", true, false, 0, false, false, false, true, "LOG"));
-        put(TEMPLATE.ERROR.name(), new LogTemplate(LogColor.RED, "", "ERR", true, false, 0, false, false, false, true, "LOG"));
+        put(LogLevel.VERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 0, false, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.VVERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 1, false, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.VVVERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 2, false, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.INFO.name(), new LogTemplate(LogColor.WHITE_BRIGHT, "", "INF", true, false, 0, true, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.WARNING.name(), new LogTemplate(LogColor.YELLOW_BRIGHT, "", "WRN", true, false, 0, false, false, false, true, "LOG", "JavaLogger"));
+        put(LogLevel.ERROR.name(), new LogTemplate(LogColor.RED_BRIGHT, "", "ERR", true, false, 0, false, false, true, true, "LOG", "JavaLogger"));
+        put(LogLevel.SPECIAL.name(), new LogTemplate(LogColor.GREEN, "", "SPE", false, false, 0, false, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.RESPONSE.name(), new LogTemplate(LogColor.BLUE, "", "RES", false, false, 0, false, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.QUESTION.name(), new LogTemplate(LogColor.CYAN_BRIGHT, "", "QUE", false, false, 0, false, false, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.CLEAN_INFO.name(), new LogTemplate(LogColor.WHITE_BRIGHT, "", "INF", true, false, 0, true, true, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.CLEAN_SPECIAL.name(), new LogTemplate(LogColor.GREEN, "", "SPE", false, false, 0, false, true, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.CLEAN_RESPONSE.name(), new LogTemplate(LogColor.BLUE, "", "RES", false, false, 0, false, true, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.CLEAN_QUESTION.name(), new LogTemplate(LogColor.CYAN_BRIGHT, "", "QUE", false, false, 0, false, true, false, false, "LOG", "JavaLogger"));
     }};
 
     private Logger()
@@ -118,6 +128,15 @@ public class Logger
     public void setConsoleExceptions(boolean showExceptionsInConsole)
     {
         consoleExceptions = showExceptionsInConsole;
+    }
+    /**
+     * Deactivating this variable will remove all project names from showing up in logging.
+     * @param showProjectName Weather or not the {@link Logger} should add the project name to logging
+     *                        (Default is true).
+     */
+    public void setProjectName(boolean showProjectName)
+    {
+        projectName = showProjectName;
     }
 
     /**
@@ -228,126 +247,140 @@ public class Logger
      * @param mixpanelName The name of the Mixpanel-event.
      * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
-    public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
+    public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName, String projectName)
     {
         boolean isNew = !templates.containsKey(templateName);
-        templates.put(templateName, new LogTemplate(colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName));
+        templates.put(templateName, new LogTemplate(colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, projectName));
         return isNew;
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     */
+    public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName, String projectName)
+    {
+        return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "JavaLogger");
+    }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     */
+    public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
+    {
+        return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "JavaLogger");
+    }
+    /**
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
-        return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName);
+        return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "JavaLogger");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, "", logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, "", logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel)
     {
         return createNewTemplate(templateName, colorCode, logLevel, true);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String)
+     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel)
     {
@@ -361,8 +394,9 @@ public class Logger
 
         String errorCode = log.errorCode == 0 ? "[---]" : "[" + log.errorCode + "]";
         String prefix = "[" + log.loglevel + "]";
+        String projectName = getInstance().projectName ? "[" + log.projectName + "]" : "";
 
-        return getLogEntryDate() + prefix + errorCode + log.message;
+        return getLogEntryDate() + prefix + errorCode + projectName + log.message;
     }
     private static String getLogEntryDate()
     {
@@ -391,7 +425,7 @@ public class Logger
         } catch(IOException e)
         {
             LogEntry l = new LogEntry("Something went wrong when writing to the log-file")
-                    .COLOR(LogColor.RED)
+                    .COLOR(LogColor.RED_BRIGHT)
                     .LEVEL("ERR")
                     .EXCEPTION(e)
                     .CODE(0)
@@ -406,6 +440,7 @@ public class Logger
 
         props.put("message", createLogString(entry));
         props.put("logLevel", entry.loglevel);
+        props.put("projectName", entry.projectName);
         if(entry.errorCode != 0)
             props.put("errorCode", String.valueOf(entry.errorCode));
         if(entry.exception != null)
@@ -429,7 +464,7 @@ public class Logger
         } catch(IOException e)
         {
             LogEntry l = new LogEntry("Could not create log-directory: " + logFolder)
-                    .COLOR(LogColor.RED)
+                    .COLOR(LogColor.RED_BRIGHT)
                     .LEVEL("ERR")
                     .CODE(0)
                     .EXCEPTION(e)
@@ -442,20 +477,12 @@ public class Logger
         } catch(IOException e)
         {
             LogEntry l = new LogEntry("Could not create file: " + currentLogFile)
-                    .COLOR(LogColor.RED)
+                    .COLOR(LogColor.RED_BRIGHT)
                     .LEVEL("ERR")
                     .CODE(0)
                     .EXCEPTION(e)
                     .FILE_ENTRY(false);
             log(l);
         }
-    }
-
-    public enum TEMPLATE
-    {
-        VERBOSE,
-        INFO,
-        WARNING,
-        ERROR
     }
 }

@@ -59,7 +59,7 @@ public class MixpanelHandler
         if(eventName == null || userID == null || projectToken == null)
         {
             LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null")
-                    .COLOR(LogColor.RED)
+                    .COLOR(LogColor.RED_BRIGHT)
                     .LEVEL("ERR")
                     .CODE(0)
                     .FILE_ENTRY(false);
@@ -75,7 +75,7 @@ public class MixpanelHandler
             if(MIXPANEL_PROPERTIES.contains(prop.toLowerCase(Locale.ROOT)))
             {
                 LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Property '" + prop + "' is a property mixpanel uses itself")
-                        .COLOR(LogColor.RED)
+                        .COLOR(LogColor.RED_BRIGHT)
                         .LEVEL("ERR")
                         .CODE(0)
                         .FILE_ENTRY(false);
@@ -182,7 +182,7 @@ public class MixpanelHandler
                 if(e != null)
                 {
                     LogEntry l = new LogEntry("Could not upload a Mixpanel delivery")
-                            .COLOR(LogColor.RED)
+                            .COLOR(LogColor.RED_BRIGHT)
                             .LEVEL("ERR")
                             .CODE(0)
                             .EXCEPTION(e)

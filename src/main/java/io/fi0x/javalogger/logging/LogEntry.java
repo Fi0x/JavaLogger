@@ -26,6 +26,7 @@ public class LogEntry
     boolean consoleException = false;
     boolean mixpanel = false;
     String mixpanelEventName = "LOG";
+    String projectName = "JavaLogger";
 
     /**
      * Create a new {@link LogEntry} with the given text.
@@ -61,6 +62,7 @@ public class LogEntry
         this.consoleException = t.consoleException;
         this.mixpanel = t.mixpanelMessage;
         this.mixpanelEventName = t.mixpanelEventName;
+        this.projectName = t.projectName;
     }
     public LogEntry(String text, Enum<?> templateName) throws IllegalArgumentException
     {
@@ -214,6 +216,17 @@ public class LogEntry
     public LogEntry MIXPANELNAME(String mixpanelEvent)
     {
         mixpanelEventName = mixpanelEvent;
+        return this;
+    }
+    /**
+     * Change the name of the project that produces this {@link LogEntry}.
+     * @param nameOfProject The project name under which this {@link LogEntry} should be displayed
+     *                      (Default is 'JavaLogger').
+     * @return The current {@link LogEntry} to be used further.
+     */
+    public LogEntry PROJECTNAME(String nameOfProject)
+    {
+        projectName = nameOfProject;
         return this;
     }
 }
