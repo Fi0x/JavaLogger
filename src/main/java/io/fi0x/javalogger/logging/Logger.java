@@ -258,7 +258,7 @@ public class Logger
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName, String projectName)
     {
-        return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "");
+        return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, projectName);
     }
     /**
      * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
