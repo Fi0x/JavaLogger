@@ -26,7 +26,7 @@ public class LogEntry
     boolean consoleException = false;
     boolean mixpanel = false;
     String mixpanelEventName = "LOG";
-    String projectName = "JavaLogger";
+    String projectName = "";
 
     /**
      * Create a new {@link LogEntry} with the given text.
@@ -221,7 +221,7 @@ public class LogEntry
     /**
      * Change the name of the project that produces this {@link LogEntry}.
      * @param nameOfProject The project name under which this {@link LogEntry} should be displayed
-     *                      (Default is 'JavaLogger').
+     *                      (Default is empty).
      * @return The current {@link LogEntry} to be used further.
      */
     public LogEntry PROJECTNAME(String nameOfProject)

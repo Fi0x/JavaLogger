@@ -29,19 +29,19 @@ public class Logger
 
     static Map<String, LogTemplate> templates = new HashMap<>()
     {{
-        put(LogLevel.VERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 0, false, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.VVERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 1, false, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.VVVERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 2, false, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.INFO.name(), new LogTemplate(LogColor.WHITE_BRIGHT, "", "INF", true, false, 0, true, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.WARNING.name(), new LogTemplate(LogColor.YELLOW_BRIGHT, "", "WRN", true, false, 0, false, false, false, true, "LOG", "JavaLogger"));
-        put(LogLevel.ERROR.name(), new LogTemplate(LogColor.RED_BRIGHT, "", "ERR", true, false, 0, false, false, true, true, "LOG", "JavaLogger"));
-        put(LogLevel.SPECIAL.name(), new LogTemplate(LogColor.GREEN, "", "SPE", false, false, 0, false, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.RESPONSE.name(), new LogTemplate(LogColor.BLUE, "", "RES", false, false, 0, false, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.QUESTION.name(), new LogTemplate(LogColor.CYAN_BRIGHT, "", "QUE", false, false, 0, false, false, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.CLEAN_INFO.name(), new LogTemplate(LogColor.WHITE_BRIGHT, "", "INF", true, false, 0, true, true, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.CLEAN_SPECIAL.name(), new LogTemplate(LogColor.GREEN, "", "SPE", false, false, 0, false, true, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.CLEAN_RESPONSE.name(), new LogTemplate(LogColor.BLUE, "", "RES", false, false, 0, false, true, false, false, "LOG", "JavaLogger"));
-        put(LogLevel.CLEAN_QUESTION.name(), new LogTemplate(LogColor.CYAN_BRIGHT, "", "QUE", false, false, 0, false, true, false, false, "LOG", "JavaLogger"));
+        put(LogLevel.VERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 0, false, false, false, false, "LOG", ""));
+        put(LogLevel.VVERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 1, false, false, false, false, "LOG", ""));
+        put(LogLevel.VVVERBOSE.name(), new LogTemplate(LogColor.WHITE, "", "VER", false, true, 2, false, false, false, false, "LOG", ""));
+        put(LogLevel.INFO.name(), new LogTemplate(LogColor.WHITE_BRIGHT, "", "INF", true, false, 0, true, false, false, false, "LOG", ""));
+        put(LogLevel.WARNING.name(), new LogTemplate(LogColor.YELLOW_BRIGHT, "", "WRN", true, false, 0, false, false, false, true, "LOG", ""));
+        put(LogLevel.ERROR.name(), new LogTemplate(LogColor.RED_BRIGHT, "", "ERR", true, false, 0, false, false, true, true, "LOG", ""));
+        put(LogLevel.SPECIAL.name(), new LogTemplate(LogColor.GREEN, "", "SPE", false, false, 0, false, false, false, false, "LOG", ""));
+        put(LogLevel.RESPONSE.name(), new LogTemplate(LogColor.BLUE, "", "RES", false, false, 0, false, false, false, false, "LOG", ""));
+        put(LogLevel.QUESTION.name(), new LogTemplate(LogColor.CYAN_BRIGHT, "", "QUE", false, false, 0, false, false, false, false, "LOG", ""));
+        put(LogLevel.CLEAN_INFO.name(), new LogTemplate(LogColor.WHITE_BRIGHT, "", "INF", true, false, 0, true, true, false, false, "LOG", ""));
+        put(LogLevel.CLEAN_SPECIAL.name(), new LogTemplate(LogColor.GREEN, "", "SPE", false, false, 0, false, true, false, false, "LOG", ""));
+        put(LogLevel.CLEAN_RESPONSE.name(), new LogTemplate(LogColor.BLUE, "", "RES", false, false, 0, false, true, false, false, "LOG", ""));
+        put(LogLevel.CLEAN_QUESTION.name(), new LogTemplate(LogColor.CYAN_BRIGHT, "", "QUE", false, false, 0, false, true, false, false, "LOG", ""));
     }};
 
     private Logger()
@@ -258,21 +258,21 @@ public class Logger
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName, String projectName)
     {
-        return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "JavaLogger");
+        return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "");
     }
     /**
      * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
-        return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "JavaLogger");
+        return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "");
     }
     /**
      * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
-        return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "JavaLogger");
+        return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "");
     }
     /**
      * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
