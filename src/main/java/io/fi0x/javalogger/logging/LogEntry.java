@@ -30,16 +30,19 @@ public class LogEntry
 
     /**
      * Create a new {@link LogEntry} with the given text.
+     *
      * @param text The message that should be logged.
      */
     public LogEntry(String text)
     {
         message = text;
     }
+
     /**
      * Create a new {@link LogEntry} with the provided text,
      * based on the given {@link LogTemplate}-name.
-     * @param text The message that should be logged.
+     *
+     * @param text         The message that should be logged.
      * @param templateName The name of the {@link LogTemplate} that should be used for the logging-behaviour.
      * @throws IllegalArgumentException Will throw if a {@link LogTemplate} with the provided name does not exist.
      */
@@ -64,6 +67,14 @@ public class LogEntry
         this.mixpanelEventName = t.mixpanelEventName;
         this.projectName = t.projectName;
     }
+    /**
+     * Create a new {@link LogEntry} with the provided text,
+     * based on the given {@link LogTemplate}-name.
+     *
+     * @param text         The message that should be logged.
+     * @param templateName The enum that will be used as name for the {@link LogTemplate}.
+     * @throws IllegalArgumentException Will throw if a {@link LogTemplate} with the provided name does not exist.
+     */
     public LogEntry(String text, Enum<?> templateName) throws IllegalArgumentException
     {
         this(text, templateName.name());
@@ -71,6 +82,7 @@ public class LogEntry
 
     /**
      * Change the color that should be used when the {@link LogEntry} is printed.
+     *
      * @param colorCode The new color code
      *                  (Default will use the current console-color).
      * @return The current {@link LogEntry} to be used further.
@@ -82,6 +94,7 @@ public class LogEntry
     }
     /**
      * Change the background-color that should be used when the {@link LogEntry} is printed.
+     *
      * @param colorCode The new background-color code
      *                  (Default will use the current console-color).
      * @return The current {@link LogEntry} to be used further.
@@ -93,6 +106,7 @@ public class LogEntry
     }
     /**
      * Change the logging-level that should be used for this {@link LogEntry}.
+     *
      * @param levelEnum The new logging-level
      *                  (Default is INFO).
      * @return The current {@link LogEntry} to be used further.
@@ -104,6 +118,7 @@ public class LogEntry
     }
     /**
      * Set a specific error code for the {@link LogEntry} to use.
+     *
      * @param exceptionCode The code that should be printed and saved
      *                      (Default will not use an error-code).
      * @return The current {@link LogEntry} to be used further.
@@ -117,6 +132,7 @@ public class LogEntry
      * Add an {@link Exception} to the {@link LogEntry}.
      * The {@link Exception} will only be visible in the log-file.
      * The message of this {@link LogEntry} will still be printed in the output.
+     *
      * @param e The {@link Exception} to save in the log-file
      *          (Default will not save any {@link Exception}s).
      * @return The current {@link LogEntry} to be used further.
@@ -128,6 +144,7 @@ public class LogEntry
     }
     /**
      * Set weather the {@link LogEntry} should be stored in the log-file or not.
+     *
      * @param shouldWriteToFile If the {@link LogEntry} should be written to the log-file
      *                          or only be printed in the output
      *                          (Default will do both).
@@ -140,6 +157,7 @@ public class LogEntry
     }
     /**
      * Set the debug-state of this {@link LogEntry}.
+     *
      * @param onlyInDebugMode If the {@link LogEntry} should only be active when the Logger is in debug-mode
      *                        (Default is false).
      * @return The current {@link LogEntry} to be used further.
@@ -151,6 +169,7 @@ public class LogEntry
     }
     /**
      * Set the verbose-state of this {@link LogEntry}.
+     *
      * @param onlyInVerboseMode If the {@link LogEntry} should only be active when the Logger is in verbose-mode
      *                          (Default is false).
      * @return The current {@link LogEntry} to be used further.
@@ -162,6 +181,7 @@ public class LogEntry
     }
     /**
      * Set the verbose-level of this {@link LogEntry}.
+     *
      * @param verboseLvl The verbose-level of the Logger which is at least required to show this message.
      *                   (Default is 0)
      * @return The current {@link LogEntry} to be used further.
@@ -174,6 +194,7 @@ public class LogEntry
     /**
      * Stop this {@link LogEntry} from using the prefix information.
      * The removed prefix information is the time, logging-level and error-code.
+     *
      * @param onlyPlaintext If the {@link LogEntry} should ignore the prefix
      *                      (Default is false).
      * @return The current {@link LogEntry} to be used further.
@@ -185,6 +206,7 @@ public class LogEntry
     }
     /**
      * Force this {@link LogEntry} to print exceptions in the console.
+     *
      * @param showExceptionsInConsole If the {@link LogEntry} should display exceptions in the console.
      *                                (Default is false).
      * @return The current {@link LogEntry} to be used further.
@@ -197,8 +219,9 @@ public class LogEntry
     /**
      * Require this {@link LogEntry} to send its information to Mixpanel.
      * This requires you to set up the {@link io.fi0x.javalogger.mixpanel.MixpanelHandler} correctly.
+     *
      * @param sendToMixpanel If the {@link LogEntry} should send its information to Mixpanel
-     *                      (Default is false).
+     *                       (Default is false).
      * @return The current {@link LogEntry} to be used further.
      */
     public LogEntry MIXPANEL(boolean sendToMixpanel)
@@ -209,6 +232,7 @@ public class LogEntry
     /**
      * Change the Mixpanel event name for this {@link LogEntry}.
      * Using Mixpanel Logs requires you to set up the {@link io.fi0x.javalogger.mixpanel.MixpanelHandler} correctly.
+     *
      * @param mixpanelEvent The event name under which this {@link LogEntry} should be displayed in Mixpanel
      *                      (Default is 'LOG').
      * @return The current {@link LogEntry} to be used further.
@@ -220,6 +244,7 @@ public class LogEntry
     }
     /**
      * Change the name of the project that produces this {@link LogEntry}.
+     *
      * @param nameOfProject The project name under which this {@link LogEntry} should be displayed
      *                      (Default is empty).
      * @return The current {@link LogEntry} to be used further.

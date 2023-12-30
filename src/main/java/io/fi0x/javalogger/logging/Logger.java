@@ -51,6 +51,7 @@ public class Logger
     }
     /**
      * Get the {@link Logger}-singleton and create it if it does not exist yet.
+     *
      * @return The instance of the {@link Logger}-singleton.
      */
     public static Logger getInstance()
@@ -65,6 +66,7 @@ public class Logger
      * If a log-file already exists in the current log-folder,
      * it will be ignored for any future logging
      * and the new log-folder location will be used instead.
+     *
      * @param logFolder The path where future log-files should be stored
      *                  (Default is "PROGRAMDATA/JavaLogger").
      */
@@ -77,6 +79,7 @@ public class Logger
      * Change the current debug-mode.
      * {@link LogEntry}s whose 'DEBUG' method was set,
      * are only visible if this method is set to true.
+     *
      * @param isDebugMode Weather or not the {@link Logger} should work in debug-mode
      *                    (Default is false).
      */
@@ -88,6 +91,7 @@ public class Logger
      * Change the current verbose-mode.
      * {@link LogEntry}s whose 'VERBOSE' method was set,
      * are only visible if this method is set to true.
+     *
      * @param isVerboseMode Weather or not the {@link Logger} should work in verbose-mode
      *                      (Default is false).
      */
@@ -98,6 +102,7 @@ public class Logger
     /**
      * Change the current verbose-level. This will show messages
      * with the selected verbose level or lower.
+     *
      * @param level How many different verbose levels should be active.
      *              (Default is 0)
      */
@@ -110,6 +115,7 @@ public class Logger
      * Using small-logs will remove all prefixes from logging.
      * This has the same effect as the plaintext setting in a single {@link LogEntry},
      * but will affect all logging.
+     *
      * @param ignorePrefixes Weather or not the {@link Logger} should use small-logs
      *                       (Default is false).
      */
@@ -122,6 +128,7 @@ public class Logger
      * Using console-exceptions will print out all StackTraces of exceptions in your console.
      * This has the same effect as the consoleException setting in a single {@link LogEntry},
      * but will affect all logging.
+     *
      * @param showExceptionsInConsole Weather or not the {@link Logger} should print StackTraces in the console
      *                                (Default is false).
      */
@@ -131,6 +138,7 @@ public class Logger
     }
     /**
      * Deactivating this variable will remove all project names from showing up in logging.
+     *
      * @param showProjectName Weather or not the {@link Logger} should add the project name to logging
      *                        (Default is true).
      */
@@ -143,6 +151,7 @@ public class Logger
      * Print the {@link LogEntry} provided with the settings that are stored in the {@link LogEntry}.
      * If the {@link LogEntry} is set to VERBOSE or DEBUG,
      * it will only be processed if the {@link Logger} has activated that mode.
+     *
      * @param log The {@link LogEntry} that should be processed.
      */
     public static void log(LogEntry log)
@@ -171,10 +180,11 @@ public class Logger
     }
     /**
      * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
-     * @param text The message to log.
+     *
+     * @param text         The message to log.
      * @param templateName The name of the {@link LogTemplate} that should be used.
-     * @param e The exception that should get logged (Default is null).
-     * @param errorCode The code for the error that occured (Default is 0).
+     * @param e            The exception that should get logged (Default is null).
+     * @param errorCode    The code for the error that occured (Default is 0).
      * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
     public static boolean log(String text, String templateName, Exception e, int errorCode)
@@ -195,36 +205,65 @@ public class Logger
         return true;
     }
     /**
-     * @see #log(String, String, Exception, int)
+     * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
+     *
+     * @param text         The message to log.
+     * @param templateName The enum that should be used as a name for the {@link LogTemplate}.
+     * @param e            The exception that should get logged (Default is null).
+     * @param errorCode    The code for the error that occured (Default is 0).
+     * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
+    @Deprecated
     public static boolean log(String text, Enum<?> templateName, Exception e, int errorCode)
     {
         return log(text, templateName.name(), e, errorCode);
     }
     /**
-     * @see #log(String, String, Exception, int)
+     * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
+     *
+     * @param text         The message to log.
+     * @param templateName The name of the {@link LogTemplate} that should be used.
+     * @param e            The exception that should get logged (Default is null).
+     * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
+    @Deprecated
     public static boolean log(String text, String templateName, Exception e)
     {
         return log(text, templateName, e, 0);
     }
     /**
-     * @see #log(String, String, Exception, int)
+     * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
+     *
+     * @param text         The message to log.
+     * @param templateName The enum that should be used as a name for the {@link LogTemplate}.
+     * @param e            The exception that should get logged (Default is null).
+     * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
+    @Deprecated
     public static boolean log(String text, Enum<?> templateName, Exception e)
     {
         return log(text, templateName, e, 0);
     }
     /**
-     * @see #log(String, String, Exception, int)
+     * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
+     *
+     * @param text         The message to log.
+     * @param templateName The name of the {@link LogTemplate} that should be used.
+     * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
+    @Deprecated
     public static boolean log(String text, String templateName)
     {
         return log(text, templateName, null);
     }
     /**
-     * @see #log(String, String, Exception, int)
+     * Create a {@link LogEntry} with the specified text and {@link LogTemplate}.
+     *
+     * @param text     The message to log.
+     * @param template The enum that should be used as a name for the {@link LogTemplate}.
+     * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
+    @Deprecated
     public static boolean log(String text, Enum<?> template)
     {
         return log(text, template, null);
@@ -233,18 +272,20 @@ public class Logger
     /**
      * Create a new {@link LogTemplate} for logging
      * that can be used to quickly create a new {@link LogEntry}.
-     * @param templateName The name which is required to find the {@link LogTemplate} again.
-     * @param colorCode The color which will be used in the console output.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
      * @param backgroundColorCode The background color which will be used in the console output.
-     * @param logLevel The logging-level.
-     * @param writeToFile If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
-     * @param onlyDebug If {@link LogEntry}s with these settings should only be visible in debug-mode.
-     * @param onlyVerbose If {@link LogEntry}s with these settings should only be visible in verbose-mode.
-     * @param verboseLevel The minimum required level for messages with this {@link LogEntry} to be displayed if they are onlyVerbose.
-     * @param hidePrefix If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param verboseLevel        The minimum required level for messages with this {@link LogEntry} to be displayed if they are onlyVerbose.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
      * @param exceptionsInConsole If {@link LogEntry}s whith these settings should print their exceptions in the console.
-     * @param mixpanelMessage If the {@link LogEntry} should be sent to Mixpanel.
-     * @param mixpanelName The name of the Mixpanel-event.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @param projectName         The name of the project that should be included in the logs as a label.
      * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName, String projectName)
@@ -254,134 +295,362 @@ public class Logger
         return isNew;
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param verboseLevel        The minimum required level for messages with this {@link LogEntry} to be displayed if they are onlyVerbose.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param exceptionsInConsole If {@link LogEntry}s whith these settings should print their exceptions in the console.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @param projectName         The name of the project that should be included in the logs as a label.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName, String projectName)
     {
         return createNewTemplate(templateName.name(), colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, projectName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param verboseLevel        The minimum required level for messages with this {@link LogEntry} to be displayed if they are onlyVerbose.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param exceptionsInConsole If {@link LogEntry}s whith these settings should print their exceptions in the console.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param verboseLevel        The minimum required level for messages with this {@link LogEntry} to be displayed if they are onlyVerbose.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param exceptionsInConsole If {@link LogEntry}s whith these settings should print their exceptions in the console.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, int verboseLevel, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, verboseLevel, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName, "");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param exceptionsInConsole If {@link LogEntry}s whith these settings should print their exceptions in the console.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param exceptionsInConsole If {@link LogEntry}s whith these settings should print their exceptions in the console.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean exceptionsInConsole, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, 0, onlyDebug, hidePrefix, exceptionsInConsole, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param backgroundColorCode The background color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String backgroundColorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, backgroundColorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, "", logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @param mixpanelName        The name of the Mixpanel-event.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage, String mixpanelName)
     {
         return createNewTemplate(templateName, colorCode, "", logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, mixpanelName);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @param mixpanelMessage     If the {@link LogEntry} should be sent to Mixpanel.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix, boolean mixpanelMessage)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, mixpanelMessage, "LOG");
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @param hidePrefix          If only the actual message without timestamp, logging-level and error-code should be shown.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug, boolean hidePrefix)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, hidePrefix, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @param onlyDebug           If {@link LogEntry}s with these settings should only be visible in debug-mode.
+     * @param onlyVerbose         If {@link LogEntry}s with these settings should only be visible in verbose-mode.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile, boolean onlyVerbose, boolean onlyDebug)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, onlyVerbose, onlyDebug, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @param writeToFile         If {@link LogEntry}s written with this {@link LogTemplate} should be saved in a log-file.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel, boolean writeToFile)
     {
         return createNewTemplate(templateName, colorCode, logLevel, writeToFile, false, false);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The name which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(String templateName, String colorCode, String logLevel)
     {
         return createNewTemplate(templateName, colorCode, logLevel, true);
     }
     /**
-     * @see #createNewTemplate(String, String, String, String, boolean, boolean, int, boolean, boolean, boolean, boolean, String, String)
+     * Create a new {@link LogTemplate} for logging
+     * that can be used to quickly create a new {@link LogEntry}.
+     *
+     * @param templateName        The enum which is required to find the {@link LogTemplate} again.
+     * @param colorCode           The color which will be used in the console output.
+     * @param logLevel            The logging-level.
+     * @return True if the {@link LogTemplate} was created successfully, False if the {@link LogTemplate} was overwritten.
      */
+    @Deprecated
     public static boolean createNewTemplate(Enum<?> templateName, String colorCode, String logLevel)
     {
         return createNewTemplate(templateName, colorCode, logLevel, true);

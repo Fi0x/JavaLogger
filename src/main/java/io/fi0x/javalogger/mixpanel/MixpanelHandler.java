@@ -12,6 +12,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class simplifies the use of the mixpanel-api. It handles communication with mixpanel and only requires setup once.
+ * After setup, mixpanel-event can be sent easily to the website.
+ */
 public class MixpanelHandler
 {
     private static Thread uploader = null;
@@ -32,6 +36,7 @@ public class MixpanelHandler
     /**
      * Send all collected messages to Mixpanel immediately.
      * This will skip the delay between mixpanel messages.
+     *
      * @return True if delivery was successful, False if there is no delivery or another problem occured.
      */
     public static boolean sendMessages()
@@ -48,8 +53,9 @@ public class MixpanelHandler
     /**
      * Add a new message to the Mixpanel delivery queue.
      * Adding a message requires the uniqueID and projectToken to be set.
-     * @param eventName The name of the event. This will also be visible on Mixpanel.
-     *                  This must not be null.
+     *
+     * @param eventName  The name of the event. This will also be visible on Mixpanel.
+     *                   This must not be null.
      * @param properties The properties for this message.
      *                   These will be visible and filterable on Mixpanel.
      * @return True if the message was successfully added to the queue, False if some information was missing.
@@ -110,7 +116,8 @@ public class MixpanelHandler
     /**
      * Properties that are added with this method will be appended to all future messages that are sent to Mixpanel.
      * This is useful for version information and other things that do not change on runtime.
-     * @param propertyName The name of the property that will be visible on Mixpanel.
+     *
+     * @param propertyName  The name of the property that will be visible on Mixpanel.
      * @param propertyValue The value of the property.
      * @return True if the property was added, False if a property with this name already exists.
      */
@@ -127,6 +134,7 @@ public class MixpanelHandler
     }
     /**
      * Set the minimum millisecond delay between each mixpanel delivery.
+     *
      * @param minMillisBetweenMessages The time in millis between each mixpanel delivery that should be sent (Min 500, Default is 5000).
      * @return True if the new delay was set, False if the delay was too short.
      */
@@ -142,6 +150,7 @@ public class MixpanelHandler
     /**
      * Set the project-token that can be obtained from Mixpanel.
      * This is required to successfully send messages to Mixpanel.
+     *
      * @param mixpanelProjectToken The token of you Mixpanel project.
      */
     public static void setProjectToken(String mixpanelProjectToken)
@@ -151,6 +160,7 @@ public class MixpanelHandler
     /**
      * Set a distinct ID for all Mixpanel messages sent from this application-instance.
      * You can use a username or UUID to identify users and track them on Mixpanel.
+     *
      * @param distinctMixpanelID The distinctID that is added to each Mixpanel message.
      */
     public static void setUniqueUserID(String distinctMixpanelID)
@@ -215,13 +225,13 @@ public class MixpanelHandler
         return null;
     }
     private static final ArrayList<String> MIXPANEL_PROPERTIES = new ArrayList<>()
-            {{
-                    add("api endpoint");
-                    add("api timestamp");
-                    add("distinct id");
-                    add("insert id");
-                    add("mixpanel library");
-                    add("time");
-                    add("time processed");
-            }};
+    {{
+        add("api endpoint");
+        add("api timestamp");
+        add("distinct id");
+        add("insert id");
+        add("mixpanel library");
+        add("time");
+        add("time processed");
+    }};
 }

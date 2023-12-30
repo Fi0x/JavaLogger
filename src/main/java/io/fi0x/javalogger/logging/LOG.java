@@ -6,9 +6,13 @@ package io.fi0x.javalogger.logging;
  */
 public class LOG
 {
+    private LOG()
+    {
+    }
     /**
      * This method will create a log message with the INFO template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
      */
     public static void INFO(String message, String projectName)
@@ -19,6 +23,7 @@ public class LOG
     }
     /**
      * This method will create a log message with the INFO template.
+     *
      * @param message The message that will be displayed in the log.
      */
     public static void INFO(String message)
@@ -28,10 +33,11 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
-     * @param errorCode The error code that will be displayed.
-     * @param exception The exception that will be printed.
+     * @param errorCode   The error code that will be displayed.
+     * @param exception   The exception that will be printed.
      */
     public static void WARN(String message, String projectName, int errorCode, Exception exception)
     {
@@ -43,7 +49,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message   The message that will be displayed in the log.
      * @param errorCode The error code that will be displayed.
      * @param exception The exception that will be printed.
      */
@@ -56,9 +63,10 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
-     * @param errorCode The error code that will be displayed.
+     * @param errorCode   The error code that will be displayed.
      */
     public static void WARN(String message, String projectName, int errorCode)
     {
@@ -69,9 +77,10 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
-     * @param exception The exception that will be printed.
+     * @param exception   The exception that will be printed.
      */
     public static void WARN(String message, String projectName, Exception exception)
     {
@@ -82,7 +91,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message   The message that will be displayed in the log.
      * @param errorCode The error code that will be displayed.
      */
     public static void WARN(String message, int errorCode)
@@ -93,7 +103,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
      */
     public static void WARN(String message, String projectName)
@@ -104,7 +115,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message   The message that will be displayed in the log.
      * @param exception The exception that will be printed.
      */
     public static void WARN(String message, Exception exception)
@@ -115,6 +127,7 @@ public class LOG
     }
     /**
      * This method will create a log message with the WARNING template.
+     *
      * @param message The message that will be displayed in the log.
      */
     public static void WARN(String message)
@@ -124,10 +137,11 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
-     * @param errorCode The error code that will be displayed.
-     * @param exception The exception that will be printed.
+     * @param errorCode   The error code that will be displayed.
+     * @param exception   The exception that will be printed.
      */
     public static void ERROR(String message, String projectName, int errorCode, Exception exception)
     {
@@ -139,7 +153,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message   The message that will be displayed in the log.
      * @param errorCode The error code that will be displayed.
      * @param exception The exception that will be printed.
      */
@@ -152,9 +167,10 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
-     * @param errorCode The error code that will be displayed.
+     * @param errorCode   The error code that will be displayed.
      */
     public static void ERROR(String message, String projectName, int errorCode)
     {
@@ -165,9 +181,10 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
-     * @param exception The exception that will be printed.
+     * @param exception   The exception that will be printed.
      */
     public static void ERROR(String message, String projectName, Exception exception)
     {
@@ -178,7 +195,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message   The message that will be displayed in the log.
      * @param errorCode The error code that will be displayed.
      */
     public static void ERROR(String message, int errorCode)
@@ -189,7 +207,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message     The message that will be displayed in the log.
      * @param projectName The name of the project this log was created in.
      */
     public static void ERROR(String message, String projectName)
@@ -200,7 +219,8 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
-     * @param message The message that will be displayed in the log.
+     *
+     * @param message   The message that will be displayed in the log.
      * @param exception The exception that will be printed.
      */
     public static void ERROR(String message, Exception exception)
@@ -211,6 +231,7 @@ public class LOG
     }
     /**
      * This method will create a log message with the ERROR template.
+     *
      * @param message The message that will be displayed in the log.
      */
     public static void ERROR(String message)
