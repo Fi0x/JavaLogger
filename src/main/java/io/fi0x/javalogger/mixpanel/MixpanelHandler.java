@@ -61,8 +61,9 @@ public class MixpanelHandler
             LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Name, UserID or ProjectToken is null")
                     .COLOR(LogColor.RED_BRIGHT)
                     .LEVEL("ERR")
-                    .CODE(0)
-                    .FILE_ENTRY(false);
+                    .CODE(601)
+                    .FILE_ENTRY(false)
+                    .PROJECTNAME("JavaLogger");
             Logger.log(l);
             return false;
         }
@@ -77,8 +78,9 @@ public class MixpanelHandler
                 LogEntry l = new LogEntry("Could not add Mixpanel-event to queue. Property '" + prop + "' is a property mixpanel uses itself")
                         .COLOR(LogColor.RED_BRIGHT)
                         .LEVEL("ERR")
-                        .CODE(0)
-                        .FILE_ENTRY(false);
+                        .CODE(602)
+                        .FILE_ENTRY(false)
+                        .PROJECTNAME("JavaLogger");
                 Logger.log(l);
                 return false;
             }
@@ -184,9 +186,10 @@ public class MixpanelHandler
                     LogEntry l = new LogEntry("Could not upload a Mixpanel delivery")
                             .COLOR(LogColor.RED_BRIGHT)
                             .LEVEL("ERR")
-                            .CODE(0)
+                            .CODE(603)
                             .EXCEPTION(e)
-                            .FILE_ENTRY(false);
+                            .FILE_ENTRY(false)
+                            .PROJECTNAME("JavaLogger");
                     Logger.log(l);
                 }
 

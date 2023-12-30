@@ -428,8 +428,9 @@ public class Logger
                     .COLOR(LogColor.RED_BRIGHT)
                     .LEVEL("ERR")
                     .EXCEPTION(e)
-                    .CODE(0)
-                    .FILE_ENTRY(false);
+                    .CODE(600)
+                    .FILE_ENTRY(false)
+                    .PROJECTNAME("JavaLogger");
             Logger.log(l);
         }
     }
