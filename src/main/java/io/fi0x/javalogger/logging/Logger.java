@@ -213,7 +213,6 @@ public class Logger
      * @param errorCode    The code for the error that occured (Default is 0).
      * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
-    @Deprecated
     public static boolean log(String text, Enum<?> templateName, Exception e, int errorCode)
     {
         return log(text, templateName.name(), e, errorCode);
@@ -251,7 +250,6 @@ public class Logger
      * @param templateName The name of the {@link LogTemplate} that should be used.
      * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
-    @Deprecated
     public static boolean log(String text, String templateName)
     {
         return log(text, templateName, null);
@@ -263,7 +261,6 @@ public class Logger
      * @param template The enum that should be used as a name for the {@link LogTemplate}.
      * @return True if logging was successful, False if the {@link LogTemplate} does not exist.
      */
-    @Deprecated
     public static boolean log(String text, Enum<?> template)
     {
         return log(text, template, null);
