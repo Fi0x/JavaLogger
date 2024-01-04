@@ -239,4 +239,53 @@ public class LOG
         LogEntry l = new LogEntry(message, LogLevel.ERROR);
         Logger.log(l);
     }
+
+    /**
+     * This method will creat a log message with the VERBOSE template.
+     *
+     * @param message      The message that will be displayed in the log.
+     * @param projectName  The name of the project this log was created in.
+     * @param verboseLevel The lowest verbose-level that is required to display this message.
+     */
+    public static void VERBOSE(String message, String projectName, int verboseLevel)
+    {
+        LogEntry l = new LogEntry(message, LogLevel.VERBOSE)
+                .PROJECTNAME(projectName);
+        l.verboseLevel = verboseLevel;
+        Logger.log(l);
+    }
+    /**
+     * This method will creat a log message with the VERBOSE template.
+     *
+     * @param message     The message that will be displayed in the log.
+     * @param projectName The name of the project this log was created in.
+     */
+    public static void VERBOSE(String message, String projectName)
+    {
+        LogEntry l = new LogEntry(message, LogLevel.VERBOSE)
+                .PROJECTNAME(projectName);
+        Logger.log(l);
+    }
+    /**
+     * This method will creat a log message with the VERBOSE template.
+     *
+     * @param message      The message that will be displayed in the log.
+     * @param verboseLevel The lowest verbose-level that is required to display this message.
+     */
+    public static void VERBOSE(String message, int verboseLevel)
+    {
+        LogEntry l = new LogEntry(message, LogLevel.VERBOSE);
+        l.verboseLevel = verboseLevel;
+        Logger.log(l);
+    }
+    /**
+     * This method will creat a log message with the VERBOSE template.
+     *
+     * @param message The message that will be displayed in the log.
+     */
+    public static void VERBOSE(String message)
+    {
+        LogEntry l = new LogEntry(message, LogLevel.VERBOSE);
+        Logger.log(l);
+    }
 }
