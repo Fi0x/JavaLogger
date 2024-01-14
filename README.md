@@ -6,6 +6,6 @@ Simple logger for java with mixpanel support
 <dependency>
   <groupId>io.github.Fi0x</groupId>
   <artifactId>JavaLogger</artifactId>
-  <version>1.3.3</version>
+  <version>1.3.5</version>
 </dependency>
 ```
